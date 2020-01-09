@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet/less" href="stylesheets/layout.less">
+    <script src="plugins/Less/less.min.js"></script>
+    <!-- Importation de MathJax (https://www.mathjax.org/) -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>MemoryBox</title>
+</head>
+<body>
+    <header>
+        <h1><span class="yellow">Memory</span><span class="blue">Box</span></h1>
+    </header>
+    <section>
+        <h3>Toutes vos flashcards</h3>
+        <div class="collection-contener">
+            <article class="collection">
+                <div class="collection-tools">
+                    <button class="add-card-button not-button" title="Ajouter une flashcard"><span class="icon">&#xe86e;</span></button>
+                    <button class="addcards-box-button not-button" title="Ajouter des flashcards à une box"><span class="icon">&#xe867;</span></button>
+                    <button class="delete-cards-button not-button" title="Supprimer des flashcards"><span class="icon">&#xe88d;</span></button>
+                </div>
+                <div class="cards-contener"></div>
+                <div class="delete-cards-form disabled" align="center">
+                    <button class="cancel-button blue-button">Annuler</button>
+                    <button class="submit-button">Supprimer</button>
+                </div>
+                <div class="addcards-box-form disabled">
+                    <button class="cancel-button blue-button">Annuler</button>
+                    <button class="submit-button">Ajouter</button>
+                </div>
+            </article>
+        </div>
+        <h3>Toutes vos boxes</h3>
+        <div class="drawer-contener"></div>
+    </section>
+    <div class="playarea">
+        <div class="settings" valign="middle">
+            <h3>Mode de lecture</h3>
+            <fieldset>
+                <legend>Ordre</legend>
+                <label for="normal"><input type="radio" name="order" id="normal" value="normal" checked><span>Normal</span></label>
+                <label for="reverse"><input type="radio" name="order" id="reverse" value="reverse"><span>Inversé</span></label>
+                <label for="shuffle"><input type="radio" name="order" id="shuffle" value="shuffle"><span>Aléatoire</span></label>
+            </fieldset>
+            <hr>
+            <fieldset>
+                <legend>Première face visible</legend>
+                <label for="yellow"><input type="radio" name="firstface" id="yellow" value="yellow" checked><span>Jaune</span></label>
+                <label for="blue"><input type="radio" name="firstface" id="blue" value="blue"><span>Bleue</span></label>
+                <label for="both"><input type="radio" name="firstface" id="both" value="both"><span>N'importe quelle face</span></label>
+            </fieldset>
+            <hr>
+            <fieldset>
+                <label for="retry"><input type="checkbox" name="retry" id="retry"><span>Rejouer les échecs</span></label>
+            </fieldset>
+            <div class="footer" align="center">
+                <button class="cancel-button blue-button">Annuler</button>
+                <button class="submit-button">Commencer</button>
+            </div>
+        </div>
+        <div class="carpet" align="center"></div>
+    </div>
+    <script src="init.js"></script>
+    <script>
+    </script>
+    <script src="renderer.js"></script>
+</body>
+</html>

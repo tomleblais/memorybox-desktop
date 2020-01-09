@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet/less" href="../stylesheets/popup.less">
+    <script src="../plugins/Less/less.min.js"></script>
+    <title>Séléction</title>
+</head>
+<body>
+    <header>
+        <h3>Seléctionnez une box :</h3>
+    </header>
+    <section></section>
+    <footer>
+        <button class="cancel-button blue-button">Annuler</button>
+    </footer>
+    <script src="../init.js"></script>
+    <script>
+        const {ipcRenderer} = electron;
+
+        const header = document.querySelector("header");
+        const section = document.querySelector("section");
+        const footer = document.querySelector("footer");
+
+        let labels = new Array();
+
+        // Affichage des boxes :
+        db.getAll("boxes", function(succ, data) {
+            if (succ) {
+                for (let i = 0; i < data.length; i++) {
+                    const row = data[i];
+                    let boxContener = document.createElement("div");
+                        boxContener.classList.add("box-contener");
+                    let label = document.createElement("label");
+                        label.classList.add("box-name");
+                        labels.push(label);
+                    let labelText = document.createTextNode(row.name);
+                        label.appendChild(labelText);
+                    let input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = "id";
+                        input.value = row.id;
+                    boxContener.appendChild(label);
+                    boxContener.appendChild(input);
+                    section.appendChild(boxContener);
+                    delete boxContener, label, input;
+                }
+                var boxContener = document.createElement("div");
+                    boxContener.classList.add("box-contener");
+                var input = document.createElement("input");
+                    input.type = "text";
+                    input.name = "name";
+                    input.placeholder = "Nouvelle box";
+                var submit = document.createElement("button");
+                    submit.innerText = "Créer";
+                    submit.addEventListener("click",function(e) {
+                        if (input.value != false) {
+                            ipcRenderer.send("send-data", {
+                                action: "box.add",
+                                name: input.value
+                            });
+                            ipcRenderer.send("popup.close", ["box.select", false]);
+                        }
+                    });
+                boxContener.appendChild(input);
+                boxContener.appendChild(submit);
+                section.appendChild(boxContener);
+            }
+        });
+        
+        footer.querySelector("button.cancel-button").addEventListener("click", function(e) {
+            ipcRenderer.send("popup.close", ["box.select", true]);
+        });
+        
+        for (let i = 0; i < labels.length; i++) {
+            const label = labels[i];
+            label.addEventListener("click", function(e) {
+                let id = parseInt(this.nextElementSibling.value);
+                ipcRenderer.send("send-data", {
+                    action: "box.select",
+                    idBox: id
+                });
+                ipcRenderer.send("popup.close", ["box.select", false]);
+            });
+        }
+    </script>
+</body>
+</html>

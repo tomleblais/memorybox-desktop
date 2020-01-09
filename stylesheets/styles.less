@@ -1,0 +1,282 @@
+@import "init.less";
+
+// Reset CSS :
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+    vertical-align: baseline;
+    .user-select(none);
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+    line-height: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 5px 10px;
+    font-weight: bold;
+    .user-select(none);
+}
+.card,
+.playlist-card {
+    @d: 100px;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    width: @d;
+    height: @d;
+    margin: 5px 5px;
+    
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+
+    color: #FFF;
+    text-align: center;
+    align-content: center;
+    // line-height: @d;
+
+    perspective: 600px;
+    transform-style: preserve-3d;
+    transform-origin: 50% 0;
+    backface-visibility: visible;
+    transition: transform 0.3s ease;
+
+    cursor: alias;
+    .user-select(none);
+    .rounded(15px);
+
+    span {
+        display: block;
+        height: @d;
+        width: @d;
+        .rounded(9px);
+        backface-visibility: hidden;
+        transition: transform 0.3s ease;
+        word-wrap: break-word;
+		&.front {
+			background-color: #f1c40f;
+		}
+		&.back {
+			position: relative;
+			z-index: -1;
+            // margin-top: -(@d);
+            margin-left: -(@d);
+			transform: rotateY(180deg);
+			background-color: #3498db;
+		}
+    }
+
+    &.is-flipped {
+        span {
+            transition: transform 0.3s ease;
+            &.front {
+                transform: rotateY(180deg);
+            }
+            &.back {
+                transform: rotateY(0deg);
+            }
+        }
+    }
+    &:active {
+        &:not(.is-flipped) {
+            span {
+                transition: transform 0.05s ease;
+                &.front {
+                    transform: rotateY(30deg);
+                }
+                &.back {
+                    transform: rotateY(210deg);
+                }
+            }
+        }
+        &.is-flipped {
+            span {
+                transition: transform 0.05s ease;
+                &.front {
+                    transform: rotateY(210deg);
+                }
+                &.back {
+                    transform: rotateY(30deg);
+                }
+            }
+        }
+    }
+    input.card-selector {
+        position: absolute;
+        transform: translateZ(80px);
+        // margin-left: 35px;
+        // margin-top: -15px;
+        bottom: 7px;
+        right: 7px;
+        cursor: pointer;
+    }
+}
+.icon {
+    font-family: "fontello";
+	font-style: normal;
+	font-weight: normal;
+	
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	// margin-right: .2em;
+	text-align: center;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1em;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    .user-select(none);
+	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+.button,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    &:not(.not-button) {
+        border: none;
+        padding: 5px 10px;
+        margin: 4px 5px;
+        color: #fff;
+        font-size: 15px;
+        background-color: @yellow;
+        .rounded(3px);
+        box-shadow: 1px 1px 0px 1px @darkyellow,                            // bordure
+                    2px 2px 3px #808080,                                  // ombre portée
+                    1px 1px 0px @yellow inset,                              // reflet caché
+                    2px 3px 0px rgba(255, 255, 255, 0.7) inset;           // reflet
+        transition: transform 0.05s ease,
+                    box-shadow 0.05s ease;
+        cursor: pointer;
+        outline: none;
+    
+        &:not(:disabled):active {
+            box-shadow: 0px 0px 0px 0px transparent;
+            transform: translate(2px, 2px);
+        }
+    }
+    &.not-button {
+        border: none;
+        background: none;
+        padding: 3px;
+        .rounded(2px);
+        font-size: 18px;
+
+        &:hover {
+            background-color: @lightgrey;
+        }
+    }
+    &:disabled {
+        opacity: 0.60;
+        cursor: not-allowed;
+    }
+    cursor: pointer;
+}
+.blue-button,
+input[type="reset"] {
+    &:not(.not-button) {
+        background-color: @blue;
+        box-shadow: 1px 1px 0px 1px @darkblue,                           // bordure
+                    2px 2px 3px #808080,                               // ombre portée
+                    1px 1px 0px @blue inset,                             // reflet caché
+                    2px 3px 0px rgba(255, 255, 255, 0.5) inset;        // reflet
+    }
+}
+i {
+    font-style: italic;
+}
+b {
+    font-weight: bold;
+}
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="email"] {
+    width: 200px;
+    padding: 3px 3px;
+    border: 1px solid @lightgrey;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: border-color .1s ease;
+    .border-radius(2px);
+    
+    &:not(:disabled):focus {
+        border-color: @grey;
+    }
+    &:not(:disabled):hover {
+        border-color: @darkgrey;
+    }
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+input[type="checkbox"],
+input[type="radio"] {
+    cursor: pointer;
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+a {
+    cursor: pointer;
+    color: @darkblue;
+    text-decoration: underline;
+    &:hover {
+        color: @blue;
+    }
+}
+.window-tools {
+    position: absolute;
+    top: 0;
+    right: 0;
+    .icon {
+        padding: 5px 7px;
+        display: inline-block;
+    }
+}

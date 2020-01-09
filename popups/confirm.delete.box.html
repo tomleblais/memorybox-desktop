@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet/less" href="../stylesheets/popup.less">
+    <script src="../plugins/Less/less.min.js"></script>
+    <title>Confirmation</title>
+</head>
+<body>
+    <header>
+        <h3>Confirmation</h3>
+    </header>
+    <section>
+        <p>Êtes-vous sûr(e) de supprimer cette box de façon permanente ?</p>
+    </section>
+    <footer>
+        <button class="cancel-button blue-button">Annuler</button>
+        <button class="delete-button">Supprimer</button>
+    </footer>
+    <script src="../init.js"></script>
+    <script>
+        const {ipcRenderer} = electron;
+        const cancelButton = document.querySelector("footer button.cancel-button");
+        const deleteButton = document.querySelector("footer button.delete-button");
+
+        cancelButton.addEventListener("click", function(e) {
+            ipcRenderer.send("send-data", {
+                action: "confirm.delete.box",
+                confirmed: false
+            });
+            ipcRenderer.send("popup.close", ["confirm.delete.box", true]);
+        });
+        deleteButton.addEventListener("click", function(e) {
+            ipcRenderer.send("send-data", {
+                action: "confirm.delete.box",
+                confirmed: true
+            });
+            ipcRenderer.send("popup.close", ["confirm.delete.box", false]);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet/less" href="../stylesheets/popup.less">
+    <!-- Importation de MathJax (https://www.mathjax.org/) -->
+    <!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
+    <script src="../plugins/Less/less.min.js"></script>
+    <title>Ajouter une carte</title>
+</head>
+<body>
+    <style>
+        table {
+            width: 100%;
+        }
+        label {
+            display: inline-block;
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            top: 45px;
+            border-radius: 5px;
+            text-align: center;
+            word-wrap: break-word;
+            color: white;
+        }
+        label[for="front-content"] {
+            left: 50px;
+            background-color: #f1c40f;
+        }
+        label[for="back-content"] {
+            right: 50px;
+            background-color: #3498db;
+        }
+        textarea {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 120px;
+            top: 155px;
+        }
+        textarea.disabled {
+            display: none;
+        }
+        textarea:not(.disabled) {
+            display: block;
+        }
+    </style>
+    <header>
+        <h3>Ajouter une carte</h3>
+    </header>
+    <section>
+        <label for="front-content">
+            <span class="front"></span>
+        </label>
+        <label for="back-content">
+            <span class="back"></span>
+        </label>
+        <textarea name="front-content" id="front-content" placeholder="Face A" title="Face A"></textarea>
+        <textarea name="back-content" id="back-content" class="disabled" placeholder="Face B" title="Face B"></textarea>
+    </section>
+    <footer align="center">
+        <button class="cancel-button blue-button">Annuler</button>
+        <button class="submit-button">Ajouter</button>
+    </footer>
+    <script src="../init.js"></script>
+    <script>
+        const {ipcRenderer} = electron;
+
+        const cancelButton = document.querySelector("footer button.cancel-button");
+        const submitButton = document.querySelector("footer button.submit-button");
+
+        var labelFront = document.querySelector("label[for='front-content']");
+        var labelBack = document.querySelector("label[for='back-content']");
+        var textAreaFront = document.querySelector("textarea#front-content");
+        var textAreaBack = document.querySelector("textarea#back-content");
+        
+        labelFront.addEventListener("click", focusTextAreaFront);
+        function focusTextAreaFront(e) {
+            textAreaFront.classList.remove("disabled");
+            textAreaBack.classList.add("disabled");
+            textAreaBack.focus();
+        }
+        labelBack.addEventListener("click", focusTextAreaBack);
+        function focusTextAreaBack(e) {
+            textAreaBack.classList.remove("disabled");
+            textAreaFront.classList.add("disabled");
+            textAreaFront.focus();
+        }
+        
+        textAreaFront.addEventListener("keyup", function(e) {
+            labelFront.querySelector("span.front").innerHTML = this.value;
+        });
+        textAreaBack.addEventListener("keyup", function(e) {
+            labelBack.querySelector("span.back").innerHTML = this.value;
+        });
+
+        cancelButton.addEventListener("click", function(e) {
+            ipcRenderer.send("popup.close", ["card.add", true]);
+        });
+        submitButton.addEventListener("click", function(e) {
+            var front = textAreaFront;
+            var back = textAreaBack;
+            if (front.value != false && back.value != false) {
+                ipcRenderer.send("send-data", {
+                    action: "card.add",
+                    front: front.value,
+                    back: back.value
+                });
+                front.value = "";
+                back.value  = "";
+                focusTextAreaFront();
+                ipcRenderer.send("popup.close", ["card.add", false]);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "memorybox-desktop",
+  "version": "1.0.0",
+  "description": "virtual memorybox desktop app",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^7.1.7",
+    "electron-db": "^0.15.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Tom Le Blais",
+  "license": "ISC"
+}
