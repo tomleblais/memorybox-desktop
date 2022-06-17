@@ -4,7 +4,7 @@
   "description": "virtual memorybox desktop app",
   "main": "main.js",
   "dependencies": {
-    "electron": "^7.1.7",
+    "electron": "^15.5.5",
     "electron-db": "^0.15.3"
   },
   "devDependencies": {},
